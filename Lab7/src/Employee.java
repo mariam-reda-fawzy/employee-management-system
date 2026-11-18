@@ -2,11 +2,11 @@ public abstract class Employee {
     private int id;
     private static int employeeCount = 0;
     private String fullName;
-    private String department; // change to enum department when we make it
+    private Department department;
     private int age;
     private String position;
 
-    public Employee(String fullName, String department, int age, String position) {
+    public Employee(String fullName, Department department, int age, String position) {
         employeeCount++;
         this.id = employeeCount+1000;
         setFullName(fullName);
@@ -38,12 +38,12 @@ public abstract class Employee {
         this.fullName = fullName;
     }
 
-    public String getDepartment() {
+    public Department getDepartment() {
         return department;
     }
 
-    public void setDepartment(String department) { //fix validating when making it enum
-        if (department == null || department.trim().isEmpty() || !department.matches("[a-zA-Z ]+")) {
+    public void setDepartment(Department department) {
+        if (department == null) {
             throw new IllegalArgumentException("Invalid Department.");
         }
         this.department = department;
