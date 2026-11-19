@@ -1,9 +1,14 @@
 import java.util.ArrayList;
+import java.util.Locale;
+
 public class EmployeeManager {
     private ArrayList<Employee> employees;
 
     public EmployeeManager(ArrayList<Employee> employees) {
-        this.employees = employees;
+        if(employees==null)
+            this.employees = new ArrayList<>();
+        else
+            this.employees = employees;
     }
 
     public boolean addEmployee(Employee emp){
@@ -36,7 +41,19 @@ public class EmployeeManager {
             return emps;
 
         for(Employee e: employees)
-            if(e.getDepartment().toString().equalsIgnoreCase(dep.trim()))
+            if(e.getDepartment().getDepartmentName().toString().equalsIgnoreCase(dep.trim()))
+                emps.add(e);
+
+        return emps;
+    }
+
+    public ArrayList<Employee> searchByName(String name){
+        ArrayList<Employee> emps = new ArrayList<>();
+        if(name==null || name.trim().isEmpty())
+            return emps;
+
+        for(Employee e: employees)
+            if(e.getFullName().toLowerCase().contains(name.trim().toLowerCase()))
                 emps.add(e);
 
         return emps;
@@ -47,6 +64,19 @@ public class EmployeeManager {
 
         if(emp==null)
             return false;
+
+        if (fullName == null || fullName.trim().isEmpty()
+                || !fullName.matches("[a-zA-Z ]+"))
+            throw new IllegalArgumentException("Invalid name.");
+
+        if (department == null)
+            throw new IllegalArgumentException("Invalid Department.");
+
+        if (age <= 0)
+            throw new IllegalArgumentException("Invalid age.");
+
+        if (position == null || position.trim().isEmpty())
+            throw new IllegalArgumentException("Invalid position.");
 
         emp.setAge(age);
         emp.setDepartment(department);
@@ -63,6 +93,9 @@ public class EmployeeManager {
 
         FullTimeEmployee e = (FullTimeEmployee) emp;
 
+        if (basicMonthlySalary < 0 || bonus < 0)
+            throw new IllegalArgumentException("Invalid salary information.");
+
         e.setBasicMonthlySalary(basicMonthlySalary);
         e.setBonus(bonus);
 
@@ -76,6 +109,9 @@ public class EmployeeManager {
             return false;
 
         PartTimeEmployee e = (PartTimeEmployee) emp;
+
+        if (hourlyPaymentRate < 0 || hoursWorked < 0)
+            throw new IllegalArgumentException("Invalid payment information.");
 
         e.setHourlyPaymentRate(hourlyPaymentRate);
         e.setHoursWorked(hoursWorked);
