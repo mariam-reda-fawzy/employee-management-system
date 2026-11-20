@@ -78,7 +78,7 @@ public class DepartmentManager {
     }
 
     public ArrayList<Department> getAllDepartments() {
-        return departments;
+        return new ArrayList<>(departments);
     }
     
 }

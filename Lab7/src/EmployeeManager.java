@@ -4,15 +4,12 @@ import java.util.Locale;
 public class EmployeeManager {
     private ArrayList<Employee> employees;
 
-//    public EmployeeManager(ArrayList<Employee> employees) {
-//        if(employees==null)
-//            this.employees = new ArrayList<>();
-//        else
-//            this.employees = employees;
-//    }
-
     public EmployeeManager(ArrayList<Department> departments) {
         this.employees = FileHandler.loadEmployees(departments);
+    }
+
+    private void saveChanges() {
+        FileHandler.saveEmployees(employees);
     }
 
     public boolean addEmployee(Employee emp){
@@ -24,11 +21,8 @@ public class EmployeeManager {
                 return false;
 
         employees.add(emp);
+        saveChanges();
         return true;
-    }
-
-    public ArrayList<Employee> viewEmployees(){
-        return new ArrayList<>(employees);
     }
 
     public Employee searchById(int id){
@@ -86,6 +80,8 @@ public class EmployeeManager {
         emp.setDepartment(department);
         emp.setFullName(fullName);
         emp.setPosition(position);
+
+        saveChanges();
         return true;
     }
 
@@ -103,6 +99,7 @@ public class EmployeeManager {
         e.setBasicMonthlySalary(basicMonthlySalary);
         e.setBonus(bonus);
 
+        saveChanges();
         return true;
     }
 
@@ -120,6 +117,7 @@ public class EmployeeManager {
         e.setHourlyPaymentRate(hourlyPaymentRate);
         e.setHoursWorked(hoursWorked);
 
+        saveChanges();
         return true;
     }
 
@@ -130,10 +128,11 @@ public class EmployeeManager {
             return false;
 
         employees.remove(emp);
+        saveChanges();
         return true;
     }
 
     public ArrayList<Employee> getAllEmployees() {
-        return employees;
+        return new ArrayList<>(employees);
     }
 }
