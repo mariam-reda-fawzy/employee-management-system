@@ -24,6 +24,7 @@ public class EmployeeManager {
                 return false;
 
         employees.add(emp);
+        FileHandler.saveEmployees(employees);
         return true;
     }
 
@@ -86,6 +87,7 @@ public class EmployeeManager {
         emp.setDepartment(department);
         emp.setFullName(fullName);
         emp.setPosition(position);
+        FileHandler.saveEmployees(employees);
         return true;
     }
 
