@@ -24,6 +24,17 @@ public class PartTimeEmployee extends Employee{
         this.hoursWorked = hoursWorked;
     }
 
+    // Constructor for loading
+    public PartTimeEmployee(int id, String fullName,
+                            Department department, int age, String position,
+                            double hourlyPaymentRate, double hoursWorked) {
+
+        super(id, fullName, department, age, position);
+
+        this.hourlyPaymentRate = hourlyPaymentRate;
+        this.hoursWorked = hoursWorked;
+    }
+
     public double getHourlyPaymentRate() {
         return hourlyPaymentRate;
     }

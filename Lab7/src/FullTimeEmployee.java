@@ -22,6 +22,16 @@ public class FullTimeEmployee extends Employee {
         this.bonus = bonus;
     }
 
+    // Constructor for loading
+    public FullTimeEmployee(int id, String fullName,
+                            Department department, int age, String position,
+                            double basicMonthlySalary, double bonus) {
+
+        super(id, fullName, department, age, position);
+        this.basicMonthlySalary = basicMonthlySalary;
+        this.bonus = bonus;
+    }
+
 
     public double getBasicMonthlySalary() {
         return basicMonthlySalary;
