@@ -15,6 +15,20 @@ public abstract class Employee {
         setPosition(position);
     }
 
+    // Constructor used when loading employees
+    public Employee(int id, String fullName, Department department,
+                    int age, String position) {
+        this.id = id;
+        setFullName(fullName);
+        setDepartment(department);
+        setAge(age);
+        setPosition(position);
+
+        if (id - 1000 > employeeCount) {
+            employeeCount = id - 1000;
+        }
+    }
+
     public static int getEmployeeCount() {
         return employeeCount;
     }

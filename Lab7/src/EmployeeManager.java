@@ -4,11 +4,15 @@ import java.util.Locale;
 public class EmployeeManager {
     private ArrayList<Employee> employees;
 
-    public EmployeeManager(ArrayList<Employee> employees) {
-        if(employees==null)
-            this.employees = new ArrayList<>();
-        else
-            this.employees = employees;
+//    public EmployeeManager(ArrayList<Employee> employees) {
+//        if(employees==null)
+//            this.employees = new ArrayList<>();
+//        else
+//            this.employees = employees;
+//    }
+
+    public EmployeeManager(ArrayList<Department> departments) {
+        this.employees = FileHandler.loadEmployees(departments);
     }
 
     public boolean addEmployee(Employee emp){
@@ -127,5 +131,9 @@ public class EmployeeManager {
 
         employees.remove(emp);
         return true;
+    }
+
+    public ArrayList<Employee> getAllEmployees() {
+        return employees;
     }
 }
