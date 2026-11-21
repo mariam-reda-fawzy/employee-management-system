@@ -1,3 +1,5 @@
+package model;
+
 public abstract class Employee {
     private int id;
     private static int employeeCount = 0;
@@ -58,7 +60,7 @@ public abstract class Employee {
 
     public void setDepartment(Department department) {
         if (department == null) {
-            throw new IllegalArgumentException("Invalid Department.");
+            throw new IllegalArgumentException("Invalid model.Department.");
         }
         this.department = department;
     }

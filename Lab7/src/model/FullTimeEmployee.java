@@ -1,3 +1,5 @@
+package model;
+
 public class FullTimeEmployee extends Employee {
     private double basicMonthlySalary;
     private double bonus;

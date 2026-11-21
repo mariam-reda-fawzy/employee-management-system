@@ -1,4 +1,6 @@
-public class PartTimeEmployee extends Employee{
+package model;
+
+public class PartTimeEmployee extends Employee {
     private double hourlyPaymentRate;
     private double hoursWorked;
 

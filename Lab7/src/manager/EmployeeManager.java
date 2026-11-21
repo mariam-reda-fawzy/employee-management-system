@@ -1,5 +1,9 @@
+package manager;
+
 import java.util.ArrayList;
-import java.util.Locale;
+
+import model.*;
+import fileHandling.*;
 
 public class EmployeeManager {
     private ArrayList<Employee> employees;

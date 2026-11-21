@@ -1,4 +1,4 @@
-
+import manager.*;
 void main() {
 
     DepartmentManager dm = new DepartmentManager();

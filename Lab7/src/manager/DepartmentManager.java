@@ -1,3 +1,7 @@
+package manager;
+
+import model.*;
+import fileHandling.*;
 import java.util.ArrayList;
 
 public class DepartmentManager {
@@ -20,12 +24,12 @@ public class DepartmentManager {
         for (Department d : departments) {
             if (d.getDepartmentId() == department.getDepartmentId()) {
                 throw new IllegalArgumentException(
-                        "Department ID already exists."
+                        "model.Department ID already exists."
                 );
             }
             if (d.getDepartmentName() == department.getDepartmentName()) {
                 throw new IllegalArgumentException(
-                        "Department name already exists."
+                        "model.Department name already exists."
                 );
             }
         }
