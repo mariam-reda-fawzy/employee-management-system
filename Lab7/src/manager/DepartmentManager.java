@@ -3,6 +3,7 @@ package manager;
 import model.*;
 import fileHandling.*;
 import java.util.ArrayList;
+import manager.*;
 
 public class DepartmentManager {
     private ArrayList <Department> departments;

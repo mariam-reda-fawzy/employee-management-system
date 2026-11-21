@@ -1,3 +1,5 @@
+package manager;
+
 import java.util.ArrayList;
 import model.*;
 import fileHandling.*;
