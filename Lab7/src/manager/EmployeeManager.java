@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import model.*;
+import fileHandling.*;
 import java.util.Locale;
 
 public class EmployeeManager {
