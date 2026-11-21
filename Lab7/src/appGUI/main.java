@@ -6,14 +6,15 @@ import java.util.ArrayList;
 
 import manager.*;
 import model.Department;
+import model.DepartmentName;
 import model.Employee;
 import fileHandling.*;
+import model.PartTimeEmployee;
 
 public class main {
     public static void main(String[] args) {
         DepartmentManager departmentManager = new DepartmentManager();
-        EmployeeManager employeeManager =
-                new EmployeeManager(departmentManager.getAllDepartments());
+        EmployeeManager employeeManager = new EmployeeManager(departmentManager.getAllDepartments());
         departmentManager.setEmployeeManager(employeeManager);
         new LoginFrame(employeeManager, departmentManager);
     }

@@ -1,8 +1,9 @@
 import manager.*;
-void main() {
+import model.Department;
+import model.DepartmentName;
+import model.Employee;
+import model.FullTimeEmployee;
 
-    DepartmentManager dm = new DepartmentManager();
-    EmployeeManager em = new EmployeeManager(dm.getAllDepartments());
-    dm.setEmployeeManager(em);
+void main() {
 
 }
