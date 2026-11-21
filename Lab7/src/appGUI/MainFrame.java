@@ -216,11 +216,9 @@ public class MainFrame extends JFrame {
 
         stats.setOpaque(false);
 
-        JLabel employeeCountLabel = new JLabel(
-                String.valueOf(Employee.getEmployeeCount())
-        );
+        JLabel employeeCountLabel = new JLabel(String.valueOf(employeeManager.getAllEmployees().size()));
 
-        JLabel departmentCountLabel = new JLabel("5");
+        JLabel departmentCountLabel = new JLabel(String.valueOf(departmentManager.getAllDepartments().size()));
 
         stats.add(statCard(
                 "TOTAL EMPLOYEES",

@@ -6,8 +6,10 @@ import java.util.ArrayList;
 
 import manager.*;
 import model.Department;
+import model.DepartmentName;
 import model.Employee;
 import fileHandling.*;
+import model.PartTimeEmployee;
 
 public class main {
     public static void main(String[] args) {
