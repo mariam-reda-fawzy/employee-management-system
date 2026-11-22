@@ -6,7 +6,7 @@ import fileHandling.*;
 import java.util.Locale;
 
 public class EmployeeManager {
-    private ArrayList<Employee> employees;
+    private static ArrayList<Employee> employees;
 
     public EmployeeManager(ArrayList<Department> departments) {
         this.employees = FileHandler.loadEmployees(departments);
@@ -136,7 +136,7 @@ public class EmployeeManager {
         return true;
     }
 
-    public ArrayList<Employee> getAllEmployees() {
+    public static ArrayList<Employee> getAllEmployees() {
         return new ArrayList<>(employees);
     }
 }

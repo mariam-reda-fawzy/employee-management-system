@@ -88,4 +88,6 @@ public abstract class Employee {
     }
 
     abstract public double calculateSalary();
+
+    public abstract String getEmployeeType();
 }

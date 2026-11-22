@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import manager.*;
 
 public class DepartmentManager {
-    private ArrayList <Department> departments;
+    private static ArrayList <Department> departments;
     private EmployeeManager employeeManager;
 
     public DepartmentManager()
@@ -82,7 +82,7 @@ public class DepartmentManager {
         return null;
     }
 
-    public ArrayList<Department> getAllDepartments() {
+    public static ArrayList<Department> getAllDepartments() {
         return new ArrayList<>(departments);
     }
     

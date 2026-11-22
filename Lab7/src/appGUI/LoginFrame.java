@@ -267,7 +267,9 @@ public class LoginFrame extends JFrame {
                 || (name.equals("Heba Kholief") && pass.equals("10061"))
                 || (name.equals("Menna Kholief") && pass.equals("10040"))
                 || (name.equals("Mariam Reda") && pass.equals("10032"))
-                || (name.equals("Aya Ahmed") && pass.equals("10493"))) {
+                || (name.equals("Aya Ahmed") && pass.equals("10493"))
+                || (name.equals("Tarek") && pass.equals("1234"))
+                || (name.equals("Kiro") && pass.equals("1234"))) {
 
             MainFrame frame = new MainFrame(
                     manager, departmentManager);

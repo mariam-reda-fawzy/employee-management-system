@@ -22,6 +22,9 @@ public class MainFrame extends JFrame {
     static final Color LIGHT = new Color(0xF8F3F5);
     static final Color BG = new Color(0xF7F3F5);
 
+    private JLabel employeeCountLabel;
+    private JLabel departmentCountLabel;
+
     private final EmployeeManager employeeManager;
     private DepartmentManager departmentManager;
     private EmployeesPanel employeesPanel;
@@ -62,10 +65,20 @@ public class MainFrame extends JFrame {
 
         employeesPanel = new EmployeesPanel(
                 employeeManager,
-                departmentManager.getAllDepartments()
+                departmentManager.getAllDepartments(),
+                this::updateDashboardStats
         );
 
         departmentPanel = new DepartmentPanel(departmentManager);
+
+        departmentPanel.setOnDepartmentsChanged(() -> {
+
+            employeesPanel.setDepartments(
+                    departmentManager.getAllDepartments()
+            );
+
+            updateDashboardStats();
+        });
 
         pages.setBackground(LoginFrame.LIGHT);
         pages.add(createDashboard(), "dashboard");
@@ -216,9 +229,8 @@ public class MainFrame extends JFrame {
 
         stats.setOpaque(false);
 
-        JLabel employeeCountLabel = new JLabel(String.valueOf(employeeManager.getAllEmployees().size()));
-
-        JLabel departmentCountLabel = new JLabel(String.valueOf(departmentManager.getAllDepartments().size()));
+        employeeCountLabel = new JLabel(String.valueOf(EmployeeManager.getAllEmployees().size()));
+        departmentCountLabel = new JLabel(String.valueOf(DepartmentManager.getAllDepartments().size()));
 
         stats.add(statCard(
                 "TOTAL EMPLOYEES",
@@ -349,6 +361,27 @@ public class MainFrame extends JFrame {
         return card;
     }
 
+    /*private void updateDashboardStats() {
+
+        employeeCountLabel.setText(
+                String.valueOf(employeeManager.getAllEmployees().size())
+        );
+
+        departmentManager.setText(
+                String.valueOf(departmentManager.getAllDepartments().size())
+        );
+
+        double payroll = 0;
+
+        for (Employee employee : employeeManager.getAllEmployees()) {
+            payroll += employee.calculateSalary();
+        }
+
+        payrollLabel.setText(
+                String.format("%,.0f EGP", payroll)
+        );
+    }*/
+
     private void showPage(String page) {
 
         if (page.equals("dashboard")) {
@@ -388,5 +421,22 @@ public class MainFrame extends JFrame {
         );
 
         cardLayout.show(pages, page);
+    }
+
+    private void updateDashboardStats() {
+
+        employeeCountLabel.setText(
+                String.valueOf(employeeManager.getAllEmployees().size())
+        );
+
+        departmentCountLabel.setText(
+                String.valueOf(departmentManager.getAllDepartments().size())
+        );
+
+        employeeCountLabel.revalidate();
+        employeeCountLabel.repaint();
+
+        departmentCountLabel.revalidate();
+        departmentCountLabel.repaint();
     }
 }
