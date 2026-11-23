@@ -6,6 +6,8 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import manager.*;
 
 public class LoginFrame extends JFrame {
@@ -49,8 +51,15 @@ public class LoginFrame extends JFrame {
         setSize(920, 570);
         setLocationRelativeTo(null);
         setResizable(true);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         setLayout(new GridLayout(1, 2));
+
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                confirmExit();
+            }
+        });
 
         leftPanel.setBackground(NAVY);
         leftPanel.setLayout(new GridBagLayout());
@@ -108,7 +117,7 @@ public class LoginFrame extends JFrame {
         exitButton.setMaximumSize(
                 new Dimension(Integer.MAX_VALUE, 45));
 
-        exitButton.addActionListener(e -> System.exit(0));
+        exitButton.addActionListener(e -> confirmExit());
 
         JPanel rightText = new JPanel();
 
@@ -151,18 +160,6 @@ public class LoginFrame extends JFrame {
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
         title.setHorizontalAlignment(SwingConstants.CENTER);
 
-        JLabel subtitle = new JLabel(
-                "<html>Admins:<br>"
-                        + "Heba Kholief<br>"
-                        + "Menna Kholief<br>"
-                        + "Mariam Reda<br>"
-                        + "Aya Ahmed</html>");
-
-        subtitle.setForeground(PINK);
-        subtitle.setFont(new Font("SansSerif", Font.PLAIN, 15));
-        subtitle.setAlignmentX(Component.RIGHT_ALIGNMENT);
-        subtitle.setHorizontalAlignment(SwingConstants.CENTER);
-
         JPanel leftText = new JPanel();
 
         leftText.setOpaque(false);
@@ -171,9 +168,6 @@ public class LoginFrame extends JFrame {
 
         leftText.add(title);
         leftText.add(Box.createVerticalStrut(27));
-
-        leftText.add(subtitle);
-        leftText.add(Box.createVerticalStrut(34));
 
         rightPanel.add(rightText);
         leftPanel.add(leftText);
@@ -244,6 +238,21 @@ public class LoginFrame extends JFrame {
         });
     }
 
+    private void confirmExit() {
+
+        int choice = JOptionPane.showConfirmDialog(
+                this,
+                "Are you sure you want to exit?",
+                "Confirm Exit",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE
+        );
+
+        if (choice == JOptionPane.YES_OPTION) {
+            System.exit(0);
+        }
+    }
+
     private void login() {
 
         String name = username.getText().trim();
@@ -266,10 +275,10 @@ public class LoginFrame extends JFrame {
         if ((name.equals("admin") && pass.equals("admin123"))
                 || (name.equals("Heba Kholief") && pass.equals("10061"))
                 || (name.equals("Menna Kholief") && pass.equals("10040"))
-                || (name.equals("Mariam Reda") && pass.equals("10032"))
+                || (name.equals("mariamreda") && pass.equals("10032"))
                 || (name.equals("Aya Ahmed") && pass.equals("10493"))
-                || (name.equals("Tarek") && pass.equals("1234"))
-                || (name.equals("Kiro") && pass.equals("1234"))) {
+                || (name.equals("engtariq") && pass.equals("123"))
+                || (name.equals("engkiro") && pass.equals("123"))) {
 
             MainFrame frame = new MainFrame(
                     manager, departmentManager);

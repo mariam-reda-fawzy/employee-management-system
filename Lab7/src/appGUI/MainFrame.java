@@ -3,13 +3,14 @@ package appGUI;
 
 import manager.DepartmentManager;
 import manager.EmployeeManager;
-import model.Employee;
 
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class MainFrame extends JFrame {
 
@@ -43,12 +44,19 @@ public class MainFrame extends JFrame {
         this.employeeManager = manager;
         this.departmentManager = departments;
 
-        this.setTitle("Dashboard Frame");
-        this.setSize(1240, 790);
-        this.setMinimumSize(new Dimension(1000, 650));
-        this.setLocationRelativeTo(null);
-        this.setResizable(true);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setTitle("Dashboard Frame");
+        setSize(1240, 790);
+        setMinimumSize(new Dimension(1000, 650));
+        setLocationRelativeTo(null);
+        setResizable(true);
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                confirmExit();
+            }
+        });
 
         setLayout(new BorderLayout());
         getContentPane().setBackground(BG);
@@ -97,7 +105,7 @@ public class MainFrame extends JFrame {
 
         showPage("dashboard");
 
-        this.setVisible(true);
+        setVisible(true);
     }
 
     private JPanel Sidebar() {
@@ -143,24 +151,24 @@ public class MainFrame extends JFrame {
 
         sidebar.add(Box.createVerticalGlue());
 
+        JButton exitButton = new JButton("✕  Exit");
+
+        styleBottomButton(exitButton);
+
+        exitButton.addActionListener(e -> confirmExit());
+
         JButton logout = new JButton("↪  Log out");
 
-        logout.setAlignmentX(Component.LEFT_ALIGNMENT);
-        logout.setMaximumSize(new Dimension(Integer.MAX_VALUE, 42));
-        logout.setForeground(new Color(0xF4DDE2));
-        logout.setBackground(new Color(0x293D5A));
-        logout.setFont(new Font("SansSerif", Font.BOLD, 12));
-        logout.setBorderPainted(false);
-        logout.setFocusPainted(false);
-        logout.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        styleBottomButton(logout);
 
         logout.addActionListener(e -> {
 
             int answer = JOptionPane.showConfirmDialog(
                     this,
                     "Are you sure you want to log out?",
-                    "Log out",
-                    JOptionPane.YES_NO_OPTION
+                    "Confirm Log out",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE
             );
 
             if (answer == JOptionPane.YES_OPTION) {
@@ -169,9 +177,39 @@ public class MainFrame extends JFrame {
             }
         });
 
+        sidebar.add(exitButton);
+        sidebar.add(Box.createVerticalStrut(8));
         sidebar.add(logout);
 
         return sidebar;
+    }
+
+    private void styleBottomButton(JButton button) {
+
+        button.setAlignmentX(Component.LEFT_ALIGNMENT);
+        button.setMaximumSize(new Dimension(Integer.MAX_VALUE, 42));
+        button.setPreferredSize(new Dimension(190, 42));
+        button.setForeground(new Color(0xF4DDE2));
+        button.setBackground(new Color(0x293D5A));
+        button.setFont(new Font("SansSerif", Font.BOLD, 12));
+        button.setBorderPainted(false);
+        button.setFocusPainted(false);
+        button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    }
+
+    private void confirmExit() {
+
+        int answer = JOptionPane.showConfirmDialog(
+                this,
+                "Are you sure you want to exit?",
+                "Confirm Exit",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE
+        );
+
+        if (answer == JOptionPane.YES_OPTION) {
+            System.exit(0);
+        }
     }
 
     private JButton sideButton(String text, String page) {
@@ -196,28 +234,25 @@ public class MainFrame extends JFrame {
         return button;
     }
 
+
     private JPanel createDashboard() {
 
-        JPanel panel = new JPanel(new BorderLayout(0, 18));
-
+        JPanel panel = new JPanel(new BorderLayout(0, 26));
         panel.setBackground(LoginFrame.LIGHT);
         panel.setOpaque(false);
 
         JPanel welcome = new JPanel();
-
         welcome.setBackground(Color.WHITE);
-        welcome.setBorder(new EmptyBorder(28, 30, 28, 30));
+        welcome.setBorder(new EmptyBorder(25, 30, 25, 30));
         welcome.setLayout(new BoxLayout(welcome, BoxLayout.Y_AXIS));
 
         JLabel title = new JLabel("Welcome to your workspace!");
-
-        title.setFont(new Font("Serif", Font.BOLD, 26));
+        title.setFont(new Font("Serif", Font.BOLD, 30));
         title.setForeground(LoginFrame.NAVY);
 
         JLabel subtitle = new JLabel(
                 "Manage your employees and departments easily."
         );
-
         subtitle.setFont(new Font("SansSerif", Font.PLAIN, 14));
         subtitle.setForeground(LoginFrame.BLUE);
 
@@ -226,11 +261,15 @@ public class MainFrame extends JFrame {
         welcome.add(subtitle);
 
         JPanel stats = new JPanel(new GridLayout(1, 2, 18, 0));
-
         stats.setOpaque(false);
 
-        employeeCountLabel = new JLabel(String.valueOf(EmployeeManager.getAllEmployees().size()));
-        departmentCountLabel = new JLabel(String.valueOf(DepartmentManager.getAllDepartments().size()));
+        employeeCountLabel = new JLabel(
+                String.valueOf(employeeManager.getAllEmployees().size())
+        );
+
+        departmentCountLabel = new JLabel(
+                String.valueOf(departmentManager.getAllDepartments().size())
+        );
 
         stats.add(statCard(
                 "TOTAL EMPLOYEES",
@@ -247,7 +286,6 @@ public class MainFrame extends JFrame {
         ));
 
         JPanel actions = new JPanel(new GridLayout(1, 2, 18, 0));
-
         actions.setOpaque(false);
 
         actions.add(dashboardCard(
@@ -264,18 +302,37 @@ public class MainFrame extends JFrame {
                 () -> showPage("departments")
         ));
 
-        JPanel lowerSection = new JPanel(new BorderLayout(0, 18));
-
+        JPanel lowerSection = new JPanel();
         lowerSection.setOpaque(false);
+        lowerSection.setLayout(
+                new BoxLayout(lowerSection, BoxLayout.Y_AXIS)
+        );
 
-        lowerSection.add(stats, BorderLayout.NORTH);
-        lowerSection.add(actions, BorderLayout.CENTER);
+        stats.setPreferredSize(
+                new Dimension(Short.MAX_VALUE, 140)
+        );
+        stats.setMaximumSize(
+                new Dimension(Integer.MAX_VALUE, 140)
+        );
+
+        actions.setPreferredSize(
+                new Dimension(Short.MAX_VALUE, 220)
+        );
+        actions.setMaximumSize(
+                new Dimension(Integer.MAX_VALUE, 220)
+        );
+
+        lowerSection.add(stats);
+        lowerSection.add(Box.createVerticalStrut(22));
+        lowerSection.add(actions);
+        lowerSection.add(Box.createVerticalGlue());
 
         panel.add(welcome, BorderLayout.NORTH);
         panel.add(lowerSection, BorderLayout.CENTER);
 
         return panel;
     }
+
 
     private JPanel dashboardCard(
             String title,
@@ -284,43 +341,51 @@ public class MainFrame extends JFrame {
             Runnable action) {
 
         JPanel card = new JPanel();
-
         card.setBackground(Color.WHITE);
 
         card.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(LoginFrame.PALE),
-                new EmptyBorder(24, 22, 24, 22)
+                new EmptyBorder(18, 22, 18, 22)
         ));
 
-        card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
+        card.setLayout(new GridBagLayout());
+
+        JPanel content = new JPanel();
+        content.setOpaque(false);
+        content.setLayout(new BoxLayout(content, BoxLayout.Y_AXIS));
 
         JLabel name = new JLabel(title);
-
-        name.setFont(new Font("Serif", Font.BOLD, 22));
+        name.setFont(new Font("Serif", Font.BOLD, 21));
         name.setForeground(LoginFrame.NAVY);
+        name.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JLabel desc = new JLabel(
-                "<html><div style='width:240px'>"
+                "<html><div style='text-align:center; width:300px'>"
                         + description
                         + "</div></html>"
         );
 
         desc.setFont(new Font("SansSerif", Font.PLAIN, 13));
         desc.setForeground(LoginFrame.BLUE);
+        desc.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JButton button = new JButton(buttonText);
-
+        button.setPreferredSize(new Dimension(210, 40));
+        button.setMaximumSize(new Dimension(210, 40));
+        button.setAlignmentX(Component.CENTER_ALIGNMENT);
         button.addActionListener(e -> action.run());
 
-        card.add(name);
-        card.add(Box.createVerticalStrut(12));
-        card.add(desc);
-        card.add(Box.createVerticalGlue());
-        card.add(Box.createVerticalStrut(18));
-        card.add(button);
+        content.add(name);
+        content.add(Box.createVerticalStrut(12));
+        content.add(desc);
+        content.add(Box.createVerticalStrut(18));
+        content.add(button);
+
+        card.add(content);
 
         return card;
     }
+
 
     private JPanel statCard(
             String heading,
@@ -329,7 +394,6 @@ public class MainFrame extends JFrame {
             Color accent) {
 
         JPanel card = new JPanel();
-
         card.setBackground(WHITE);
 
         card.setBorder(new CompoundBorder(
@@ -340,7 +404,6 @@ public class MainFrame extends JFrame {
         card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
 
         JLabel label = new JLabel(heading);
-
         label.setForeground(BLUE);
         label.setFont(new Font("SansSerif", Font.BOLD, 10));
 
@@ -348,7 +411,6 @@ public class MainFrame extends JFrame {
         value.setFont(new Font("Serif", Font.BOLD, 28));
 
         JLabel detail = new JLabel(note);
-
         detail.setForeground(new Color(0x8995A4));
         detail.setFont(new Font("SansSerif", Font.PLAIN, 10));
 
@@ -360,27 +422,6 @@ public class MainFrame extends JFrame {
 
         return card;
     }
-
-    /*private void updateDashboardStats() {
-
-        employeeCountLabel.setText(
-                String.valueOf(employeeManager.getAllEmployees().size())
-        );
-
-        departmentManager.setText(
-                String.valueOf(departmentManager.getAllDepartments().size())
-        );
-
-        double payroll = 0;
-
-        for (Employee employee : employeeManager.getAllEmployees()) {
-            payroll += employee.calculateSalary();
-        }
-
-        payrollLabel.setText(
-                String.format("%,.0f EGP", payroll)
-        );
-    }*/
 
     private void showPage(String page) {
 
