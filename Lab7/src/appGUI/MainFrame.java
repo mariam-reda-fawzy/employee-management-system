@@ -274,14 +274,14 @@ public class MainFrame extends JFrame {
         stats.add(statCard(
                 "TOTAL EMPLOYEES",
                 employeeCountLabel,
-                "People in your organization",
+                "People in your organization.",
                 BLUE
         ));
 
         stats.add(statCard(
                 "DEPARTMENTS",
                 departmentCountLabel,
-                "Departments across the company",
+                "Departments across the company.",
                 ROSE
         ));
 
@@ -334,21 +334,20 @@ public class MainFrame extends JFrame {
     }
 
 
+
     private JPanel dashboardCard(
             String title,
             String description,
             String buttonText,
             Runnable action) {
 
-        JPanel card = new JPanel();
+        JPanel card = new JPanel(new GridBagLayout());
         card.setBackground(Color.WHITE);
 
         card.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(LoginFrame.PALE),
                 new EmptyBorder(18, 22, 18, 22)
         ));
-
-        card.setLayout(new GridBagLayout());
 
         JPanel content = new JPanel();
         content.setOpaque(false);
@@ -357,22 +356,22 @@ public class MainFrame extends JFrame {
         JLabel name = new JLabel(title);
         name.setFont(new Font("Serif", Font.BOLD, 21));
         name.setForeground(LoginFrame.NAVY);
-        name.setAlignmentX(Component.CENTER_ALIGNMENT);
+        name.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         JLabel desc = new JLabel(
-                "<html><div style='text-align:center; width:300px'>"
+                "<html><div style='width:300px'>"
                         + description
                         + "</div></html>"
         );
 
         desc.setFont(new Font("SansSerif", Font.PLAIN, 13));
         desc.setForeground(LoginFrame.BLUE);
-        desc.setAlignmentX(Component.CENTER_ALIGNMENT);
+        desc.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         JButton button = new JButton(buttonText);
         button.setPreferredSize(new Dimension(210, 40));
         button.setMaximumSize(new Dimension(210, 40));
-        button.setAlignmentX(Component.CENTER_ALIGNMENT);
+        button.setAlignmentX(Component.LEFT_ALIGNMENT);
         button.addActionListener(e -> action.run());
 
         content.add(name);
@@ -381,10 +380,19 @@ public class MainFrame extends JFrame {
         content.add(Box.createVerticalStrut(18));
         content.add(button);
 
-        card.add(content);
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 1;
+        gbc.weighty = 1;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.insets = new Insets(0, 8, 0, 0);
+
+        card.add(content, gbc);
 
         return card;
     }
+
 
 
     private JPanel statCard(
@@ -465,19 +473,16 @@ public class MainFrame extends JFrame {
     }
 
     private void updateDashboardStats() {
-
         employeeCountLabel.setText(
                 String.valueOf(employeeManager.getAllEmployees().size())
         );
-
         departmentCountLabel.setText(
                 String.valueOf(departmentManager.getAllDepartments().size())
         );
-
-        employeeCountLabel.revalidate();
-        employeeCountLabel.repaint();
-
-        departmentCountLabel.revalidate();
-        departmentCountLabel.repaint();
+        if (departmentPanel != null) {
+            departmentPanel.refreshTable();
+        }
+        revalidate();
+        repaint();
     }
 }
