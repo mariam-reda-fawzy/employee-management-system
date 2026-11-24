@@ -154,6 +154,17 @@ public class LoginFrame extends JFrame {
 
         JLabel title = new JLabel(
                 "<html>Employee<br>Management<br>System</html>");
+        JLabel subtitle = new JLabel(
+                "<html>Admins:<br>"
+                        + "Heba Kholief<br>"
+                        + "Menna Kholief<br>"
+                        + "Mariam Reda<br>"
+                        + "Aya Ahmed</html>");
+
+        subtitle.setForeground(PINK);
+        subtitle.setFont(new Font("SansSerif", Font.PLAIN, 15));
+        subtitle.setAlignmentX(Component.RIGHT_ALIGNMENT);
+        subtitle.setHorizontalAlignment(SwingConstants.CENTER);
 
         title.setForeground(Color.WHITE);
         title.setFont(new Font("Serif", Font.BOLD, 38));
@@ -168,6 +179,9 @@ public class LoginFrame extends JFrame {
 
         leftText.add(title);
         leftText.add(Box.createVerticalStrut(27));
+
+        leftText.add(subtitle);
+        leftText.add(Box.createVerticalStrut(34));
 
         rightPanel.add(rightText);
         leftPanel.add(leftText);
