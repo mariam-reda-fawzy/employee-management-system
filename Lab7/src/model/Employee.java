@@ -9,12 +9,12 @@ public abstract class Employee {
     private String position;
 
     public Employee(String fullName, Department department, int age, String position) {
-        employeeCount++;
-        this.id = employeeCount+1000;
         setFullName(fullName);
         setDepartment(department);
         setAge(age);
         setPosition(position);
+        employeeCount++;
+        this.id = employeeCount+1000;
     }
 
     // Constructor used when loading employees
