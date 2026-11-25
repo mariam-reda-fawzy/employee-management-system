@@ -81,7 +81,7 @@ public abstract class Employee {
     }
 
     public void setPosition(String position) {
-        if (position == null || position.trim().isEmpty()) {
+        if (position == null || position.trim().isEmpty() || !position.matches("[a-zA-Z ]+")) {
             throw new IllegalArgumentException("Invalid position.");
         }
         this.position = position;
