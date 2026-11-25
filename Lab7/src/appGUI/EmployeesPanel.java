@@ -25,6 +25,7 @@ public class EmployeesPanel extends JPanel {
     private JTextField searchField;
     private JComboBox<String> searchType;
     private JComboBox<DepartmentName> departmentFilter;
+    private boolean updatingDepartmentFilter = false;
 
     public EmployeesPanel(EmployeeManager manager, ArrayList<Department> departments) {
         this(manager, departments, null);
@@ -89,7 +90,11 @@ public class EmployeesPanel extends JPanel {
         JButton searchButton = secondaryButton("Search");
         searchButton.addActionListener(e -> searchEmployees());
 
-        departmentFilter.addActionListener(e -> searchEmployees());
+        departmentFilter.addActionListener(e -> {
+            if (!updatingDepartmentFilter) {
+                searchEmployees();
+            }
+        });
 
         JButton resetButton = secondaryButton("Reset");
         resetButton.addActionListener(e -> {
@@ -694,21 +699,34 @@ public class EmployeesPanel extends JPanel {
         comboBox.setFocusable(false);
     }
 
+
     private void refreshDepartmentFilter() {
-        DepartmentName previous = (DepartmentName) departmentFilter.getSelectedItem();
-        DefaultComboBoxModel<DepartmentName> model = new DefaultComboBoxModel<>();
+        updatingDepartmentFilter = true;
 
-        for (Department department : departments) {
-            model.addElement(department.getDepartmentName());
-        }
+        try {
+            DepartmentName previous =
+                    (DepartmentName) departmentFilter.getSelectedItem();
 
-        departmentFilter.setModel(model);
-        departmentFilter.setSelectedItem(previous);
+            DefaultComboBoxModel<DepartmentName> model =
+                    new DefaultComboBoxModel<>();
 
-        if (previous == null || model.getIndexOf(previous) == -1) {
-            departmentFilter.setSelectedIndex(-1);
+            for (Department department : departments) {
+                model.addElement(department.getDepartmentName());
+            }
+
+            departmentFilter.setModel(model);
+
+            if (previous != null && model.getIndexOf(previous) >= 0) {
+                departmentFilter.setSelectedItem(previous);
+            } else {
+                departmentFilter.setSelectedIndex(-1);
+            }
+
+        } finally {
+            updatingDepartmentFilter = false;
         }
     }
+
 
     public void setDepartments(ArrayList<Department> departments) {
         this.departments = departments;

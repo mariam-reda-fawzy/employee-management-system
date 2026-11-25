@@ -1,6 +1,4 @@
-
 package appGUI;
-
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -11,7 +9,6 @@ import java.awt.event.WindowEvent;
 import manager.*;
 
 public class LoginFrame extends JFrame {
-
     static final Color NAVY = new Color(0x1B2A44);
     static final Color BLUE = new Color(0x3E5C7A);
     static final Color PALE = new Color(0xE7CED6);

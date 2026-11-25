@@ -10,7 +10,7 @@ public class FileHandler {
     private static final String DEPARTMENT_FILE = "departments.csv";
 
     public static void saveEmployees(ArrayList<Employee> employees) {
-        try (PrintWriter writer = new PrintWriter(new FileWriter(EMPLOYEE_FILE))) {
+        try (PrintWriter writer = new PrintWriter(EMPLOYEE_FILE)) {
             writer.println("id,type,fullName,departmentId,age,position,basicSalary,bonus,hourlyRate,hoursWorked");
             for (Employee e : employees) {
                 if (e instanceof FullTimeEmployee) {
@@ -48,7 +48,7 @@ public class FileHandler {
     }
 
     public static void saveDepartments(ArrayList<Department> departments) {
-        try (PrintWriter writer = new PrintWriter(new FileWriter(DEPARTMENT_FILE))) {
+        try (PrintWriter writer = new PrintWriter(DEPARTMENT_FILE)) {
             writer.println("departmentId,departmentName");
             for (Department d : departments) {
                 writer.println(d.getDepartmentId() + "," + d.getDepartmentName());
