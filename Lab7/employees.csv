@@ -1,3 +1,5 @@
 id,type,fullName,departmentId,age,position,basicSalary,bonus,hourlyRate,hoursWorked
-1001,FullTime,mariam reda,2,20,junior,20000.0,0.0,0,0
-1003,FullTime,aya ahmed,2,20,leader,1000000.0,1.0,0,0
+1001,FullTime,Aya Ahmed,1,20,Junior,25000.0,0.0,0,0
+1002,FullTime,Heba Kholief,4,21,Mid,35000.0,0.0,0,0
+1003,FullTime,Menna Kholief,2,21,Mid,35000.0,0.0,0,0
+1004,FullTime,Mariam Reda,1,20,Junior,25000.0,0.0,0,0
