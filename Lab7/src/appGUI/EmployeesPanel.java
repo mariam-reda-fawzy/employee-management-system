@@ -452,12 +452,15 @@ public class EmployeesPanel extends JPanel {
 
                 if (editing) {
 
-                    boolean updated = manager.updateEmployee(
+                    boolean updated = manager.replaceEmployeeType(
                             existing.getId(),
                             name,
                             department,
                             age,
-                            position
+                            position,
+                            fullTime,
+                            first,
+                            second
                     );
 
                     if (!updated) {
@@ -466,28 +469,8 @@ public class EmployeesPanel extends JPanel {
                         );
                     }
 
-                    if (fullTime) {
-
-                        if (!manager.updateFullTimeSalary(
-                                existing.getId(), first, second)) {
-
-                            throw new IllegalArgumentException(
-                                    "Could not update Full-Time salary."
-                            );
-                        }
-
-                    } else {
-
-                        if (!manager.updatePartTimeSalary(
-                                existing.getId(), first, second)) {
-
-                            throw new IllegalArgumentException(
-                                    "Could not update Part-Time salary."
-                            );
-                        }
-                    }
-
-                } else {
+                }
+                 else{
 
                     Employee employee;
 

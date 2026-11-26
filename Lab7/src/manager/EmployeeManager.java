@@ -125,6 +125,57 @@ public class EmployeeManager {
         return true;
     }
 
+    public boolean replaceEmployeeType(
+            int id,
+            String fullName,
+            Department department,
+            int age,
+            String position,
+            boolean fullTime,
+            double firstSalary,
+            double secondSalary
+    ) {
+        Employee oldEmployee = searchById(id);
+
+        if (oldEmployee == null)
+            return false;
+
+        int index = employees.indexOf(oldEmployee);
+
+        Employee newEmployee;
+
+        if (fullTime) {
+
+            newEmployee = new FullTimeEmployee(
+                    id,
+                    fullName,
+                    department,
+                    age,
+                    position,
+                    firstSalary,
+                    secondSalary
+            );
+
+        } else {
+
+            newEmployee = new PartTimeEmployee(
+                    id,
+                    fullName,
+                    department,
+                    age,
+                    position,
+                    firstSalary,
+                    secondSalary
+            );
+        }
+
+        employees.set(index, newEmployee);
+
+        saveChanges();
+
+        return true;
+    }
+
     public boolean deleteEmployee(int id){
         Employee emp = searchById(id);
 

@@ -101,7 +101,7 @@ public class LoginFrame extends JFrame {
         loginButton.setBackground(ROSE);
         loginButton.setForeground(Color.WHITE);
         loginButton.setFont(new Font("SansSerif", Font.BOLD, 14));
-        loginButton.setPreferredSize(new Dimension(300, 45));
+        loginButton.setPreferredSize(new Dimension(300, 35));
         loginButton.setMaximumSize(
                 new Dimension(Integer.MAX_VALUE, 45));
 
@@ -110,7 +110,7 @@ public class LoginFrame extends JFrame {
         exitButton.setBackground(NAVY);
         exitButton.setForeground(Color.WHITE);
         exitButton.setFont(new Font("SansSerif", Font.BOLD, 14));
-        exitButton.setPreferredSize(new Dimension(300, 45));
+        exitButton.setPreferredSize(new Dimension(300, 35));
         exitButton.setMaximumSize(
                 new Dimension(Integer.MAX_VALUE, 45));
 

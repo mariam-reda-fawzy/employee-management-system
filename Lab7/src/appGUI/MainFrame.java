@@ -187,8 +187,8 @@ public class MainFrame extends JFrame {
     private void styleBottomButton(JButton button) {
 
         button.setAlignmentX(Component.LEFT_ALIGNMENT);
-        button.setMaximumSize(new Dimension(Integer.MAX_VALUE, 42));
-        button.setPreferredSize(new Dimension(190, 42));
+        button.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));
+        button.setPreferredSize(new Dimension(190, 30));
         button.setForeground(new Color(0xF4DDE2));
         button.setBackground(new Color(0x293D5A));
         button.setFont(new Font("SansSerif", Font.BOLD, 12));
@@ -369,7 +369,9 @@ public class MainFrame extends JFrame {
         desc.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         JButton button = new JButton(buttonText);
-        button.setPreferredSize(new Dimension(210, 40));
+        button.setBackground(PINK);
+        button.setForeground(Color.BLACK);
+        button.setPreferredSize(new Dimension(150, 30));
         button.setMaximumSize(new Dimension(210, 40));
         button.setAlignmentX(Component.LEFT_ALIGNMENT);
         button.addActionListener(e -> action.run());
