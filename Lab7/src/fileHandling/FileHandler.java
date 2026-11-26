@@ -85,13 +85,10 @@ public class FileHandler {
     public static ArrayList<Employee> loadEmployees(ArrayList<Department> departments) {
         ArrayList<Employee> employees = new ArrayList<>();
         File file = new File(EMPLOYEE_FILE);
-
         if (!file.exists()) {
             return employees;
         }
-
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-
             String line;
             reader.readLine();
 

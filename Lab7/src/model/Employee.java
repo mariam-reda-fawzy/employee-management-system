@@ -70,7 +70,7 @@ public abstract class Employee {
     }
 
     public void setAge(int age) {
-        if (age<=0) {
+        if (age<=17 || age>=60) {
             throw new IllegalArgumentException("Invalid age.");
         }
         this.age = age;
@@ -89,5 +89,5 @@ public abstract class Employee {
 
     abstract public double calculateSalary();
 
-    public abstract String getEmployeeType();
+//    public abstract String getEmployeeType();
 }
