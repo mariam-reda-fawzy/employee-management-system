@@ -1,3 +1,4 @@
+
 package appGUI;
 
 import manager.EmployeeManager;
@@ -5,6 +6,8 @@ import model.*;
 
 import javax.swing.*;
 import javax.swing.border.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.ArrayList;
@@ -27,7 +30,6 @@ public class EmployeesPanel extends JPanel {
     private JComboBox<String> searchType;
     private JComboBox<DepartmentName> departmentFilter;
 
-    // Employee count label
     private JLabel employeeCountLabel;
 
     private boolean updatingDepartmentFilter = false;
@@ -74,7 +76,6 @@ public class EmployeesPanel extends JPanel {
 
         center.add(createSearchPanel(), BorderLayout.NORTH);
 
-        // Employee count and table section
         JPanel tableSection = new JPanel(new BorderLayout(0, 8));
         tableSection.setOpaque(false);
 
@@ -91,30 +92,31 @@ public class EmployeesPanel extends JPanel {
         add(center, BorderLayout.CENTER);
     }
 
+    // Search panel matching DepartmentPanel
     private JPanel createSearchPanel() {
 
-        JPanel tools = new JPanel(new FlowLayout(FlowLayout.LEFT, 9, 0));
+        JPanel tools = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 4));
         tools.setOpaque(false);
 
-        searchType = new JComboBox<>(new String[]{"All", "ID", "Name"});
-        searchType.setPreferredSize(new Dimension(125, 37));
-        searchType.setFont(new Font("SansSerif", Font.PLAIN, 12));
+        JLabel searchLabel = new JLabel("Search by:");
+        searchLabel.setForeground(BLUE);
+        searchLabel.setFont(new Font("SansSerif", Font.BOLD, 12));
 
-        searchField = new JTextField(18);
-        searchField.setPreferredSize(new Dimension(220, 37));
+        searchType = new JComboBox<>(new String[]{"ID", "Name"});
+        searchType.setPreferredSize(new Dimension(110, 36));
+        styleComboBox(searchType);
+
+        searchField = new JTextField();
+        searchField.setPreferredSize(new Dimension(230, 36));
         styleInput(searchField);
 
         departmentFilter = new JComboBox<>();
-        departmentFilter.setPreferredSize(new Dimension(150, 37));
-        departmentFilter.setFont(new Font("SansSerif", Font.PLAIN, 12));
+        departmentFilter.setPreferredSize(new Dimension(150, 36));
+        styleComboBox(departmentFilter);
 
         refreshDepartmentFilter();
 
-        styleComboBox(searchType);
-        styleComboBox(departmentFilter);
-
-        JButton searchButton = secondaryButton("Search");
-        searchButton.addActionListener(e -> searchEmployees());
+        JButton resetButton = secondaryButton("Reset");
 
         departmentFilter.addActionListener(e -> {
             if (!updatingDepartmentFilter) {
@@ -122,20 +124,39 @@ public class EmployeesPanel extends JPanel {
             }
         });
 
-        JButton resetButton = secondaryButton("Reset");
-
         resetButton.addActionListener(e -> {
             searchField.setText("");
             searchType.setSelectedIndex(0);
             departmentFilter.setSelectedIndex(-1);
-            refreshTable();
+            searchEmployees();
         });
 
-        searchField.addActionListener(e -> searchEmployees());
+        // Automatically search while typing
+        searchField.getDocument().addDocumentListener(
+                new DocumentListener() {
 
+                    @Override
+                    public void insertUpdate(DocumentEvent e) {
+                        searchEmployees();
+                    }
+
+                    @Override
+                    public void removeUpdate(DocumentEvent e) {
+                        searchEmployees();
+                    }
+
+                    @Override
+                    public void changedUpdate(DocumentEvent e) {
+                        searchEmployees();
+                    }
+                });
+
+        // Search when ID / Name selection changes
+        searchType.addActionListener(e -> searchEmployees());
+
+        tools.add(searchLabel);
         tools.add(searchType);
         tools.add(searchField);
-        tools.add(searchButton);
         tools.add(departmentFilter);
         tools.add(resetButton);
 
@@ -469,8 +490,7 @@ public class EmployeesPanel extends JPanel {
                         );
                     }
 
-                }
-                 else{
+                } else {
 
                     Employee employee;
 
@@ -655,65 +675,40 @@ public class EmployeesPanel extends JPanel {
         }
     }
 
+    // Search employees by selected type and department
     private void searchEmployees() {
 
-        String value = searchField.getText().trim();
+        String value = searchField.getText().trim().toLowerCase();
 
         DepartmentName selectedDepartment =
                 (DepartmentName) departmentFilter.getSelectedItem();
 
-        ArrayList<Employee> result = new ArrayList<>();
-
         String kind = (String) searchType.getSelectedItem();
 
-        if (value.isEmpty()) {
+        ArrayList<Employee> result = new ArrayList<>();
 
-            result = manager.getAllEmployees();
+        for (Employee employee : manager.getAllEmployees()) {
 
-        } else if ("ID".equals(kind)) {
+            boolean matches;
 
-            try {
-
-                Employee employee = manager.searchById(
-                        Integer.parseInt(value)
-                );
-
-                if (employee != null) {
-                    result.add(employee);
-                }
-
-            } catch (NumberFormatException ex) {
-
-                JOptionPane.showMessageDialog(
-                        this,
-                        "Employee ID must be an integer."
-                );
-
-                return;
+            if (value.isEmpty()) {
+                matches = true;
+            } else if ("ID".equals(kind)) {
+                matches = String.valueOf(employee.getId())
+                        .contains(value);
+            } else {
+                matches = employee.getFullName()
+                        .toLowerCase()
+                        .contains(value);
             }
 
-        } else if ("Name".equals(kind)) {
-
-            result = manager.searchByName(value);
-
-        } else {
-
-            for (Employee employee : manager.getAllEmployees()) {
-
-                boolean matches =
-                        String.valueOf(employee.getId()).contains(value)
-                                || employee.getFullName()
-                                .toLowerCase()
-                                .contains(value.toLowerCase());
-
-                if (matches) {
-                    result.add(employee);
-                }
+            if (matches) {
+                result.add(employee);
             }
         }
 
+        // Apply department filter
         if (selectedDepartment != null) {
-
             result.removeIf(employee ->
                     employee.getDepartment().getDepartmentName()
                             != selectedDepartment
@@ -722,15 +717,9 @@ public class EmployeesPanel extends JPanel {
 
         fillTable(result);
 
-        if (result.isEmpty()) {
-
-            JOptionPane.showMessageDialog(
-                    this,
-                    "No matching employees were found.",
-                    "Search results",
-                    JOptionPane.INFORMATION_MESSAGE
-            );
-        }
+        employeeCountLabel.setText(
+                "Total employees: " + result.size()
+        );
     }
 
     // Refreshes the table and employee count
